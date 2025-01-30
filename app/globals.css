@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --electric-blue: #00ffff;
+  --deep-blue: #000033;
+  --neon-red: #ff0055;
+  --deep-gold: #ffd700;
+}
+
+body {
+  @apply bg-gradient-to-br from-black to-deep-blue text-white;
+}
+
+@layer utilities {
+  .text-electric-blue {
+    color: var(--electric-blue);
+  }
+
+  .bg-electric-blue {
+    background-color: var(--electric-blue);
+  }
+
+  .bg-deep-blue {
+    background-color: var(--deep-blue);
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--electric-blue);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00cccc;
+}
+

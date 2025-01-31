@@ -59,7 +59,7 @@ const services = [
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800&h=600",
     logo: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=100&h=100",
     description: "Cutting-edge digital solutions",
-    link: "https://www.devnx.odoo.com/",
+    link: "https://devnx.odoo.com/",
   },
   {
     name: "Business Consulting",

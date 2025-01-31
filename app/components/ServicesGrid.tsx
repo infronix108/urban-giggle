@@ -55,11 +55,11 @@ const services = [
     link: "/services/health",
   },
   {
-    name: "Digital Services",
+    name: "Business Development Digital Services",
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800&h=600",
     logo: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=100&h=100",
     description: "Cutting-edge digital solutions",
-    link: "/services/digital",
+    link: "https://www.devnx.odoo.com/",
   },
   {
     name: "Business Consulting",

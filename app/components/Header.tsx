@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Menu, X } from "lucide-react"
+import Image from "next/image"
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -21,8 +22,8 @@ export default function Header() {
       className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? "bg-black/70 backdrop-blur-md" : ""}`}
     >
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold text-electric-blue">
-          Infronix
+        <Link href="/">
+          <Image src="/logo.png" alt="Infronix Logo" width={150} height={50} priority />
         </Link>
         <div className="hidden md:flex items-center space-x-6">
           <nav className="flex space-x-6">

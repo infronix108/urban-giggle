@@ -25,7 +25,7 @@ export default function Header() {
     >
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link href="/">
-          <Image src="/logo.jpg" alt="Infronix Logo" width={150} height={50} priority className="object-contain" />
+          <Image src="/logo.jpg" alt="Infronix Logo" width={400} height={100} priority className="object-contain rounded-full" />
         </Link>
         <div className="hidden md:flex items-center space-x-6">
           <nav className="flex space-x-6">

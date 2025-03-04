@@ -59,21 +59,21 @@ const services = [
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800&h=600",
     logo: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=100&h=100",
     description: "Cutting-edge digital solutions",
-    link: "https://devnx.odoo.com/",
+    link: "/services/business-development",
   },
   {
     name: "Business Consulting",
     image: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&q=80&w=800&h=600",
     logo: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=100&h=100",
     description: "Strategic business advisory services",
-    link: "/services/business",
+    link: "/services/consulting",
   },
   {
     name: "Games for Kids",
     image: "https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?auto=format&fit=crop&q=80&w=800&h=600",
     logo: "https://images.unsplash.com/photo-1535572290543-960a8046f5af?auto=format&fit=crop&q=80&w=100&h=100",
     description: "Online games and entertainment for children",
-    link: "https://www.crazygames.com/",
+    link: "/services/games",
   },
 ]
 
@@ -136,4 +136,3 @@ export default function ServicesGrid() {
     </section>
   )
 }
-

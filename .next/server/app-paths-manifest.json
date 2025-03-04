@@ -1,0 +1,7 @@
+{
+  "/page": "app/page.js",
+  "/services/health/page": "app/services/health/page.js",
+  "/services/home/page": "app/services/home/page.js",
+  "/services/consulting/page": "app/services/consulting/page.js",
+  "/services/business-development/page": "app/services/business-development/page.js"
+}

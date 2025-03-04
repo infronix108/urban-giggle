@@ -15,23 +15,12 @@ export default function HomeServicesPage() {
       image="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&q=80&w=1600"
       sites={[
         {
-          name: "HomeAdvisor",
-          url: "https://www.homeadvisor.com",
+          name: "CSB Property",
+          url: "https://csbproperty.in/",
           rating: 4.5,
           verified: true,
         },
-        {
-          name: "Angi",
-          url: "https://www.angi.com",
-          rating: 4.2,
-          verified: true,
-        },
-        {
-          name: "Thumbtack",
-          url: "https://www.thumbtack.com",
-          rating: 3.8,
-          verified: false,
-        },
+        
       ]}
     />
   )

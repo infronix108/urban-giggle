@@ -15,23 +15,12 @@ export default function FoodServicesPage() {
       image="https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&q=80&w=1600"
       sites={[
         {
-          name: "ezCater",
-          url: "https://www.ezcater.com",
+          name: "Charlie's Dragon",
+          url: "https://www.charliesdragon.in/",
           rating: 4.8,
           verified: true,
         },
-        {
-          name: "CaterSpot",
-          url: "https://www.caterspot.com",
-          rating: 4.3,
-          verified: true,
-        },
-        {
-          name: "Caviar Catering",
-          url: "https://www.trycaviar.com/catering",
-          rating: 4.0,
-          verified: false,
-        },
+        
       ]}
     />
   )

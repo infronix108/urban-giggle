@@ -15,23 +15,12 @@ export default function BusinessDevelopmentPage() {
       image="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1600"
       sites={[
         {
-          name: "Salesforce",
-          url: "https://www.salesforce.com",
+          name: "Development NextGen",
+          url: "https://devnx.odoo.com/",
           rating: 4.9,
           verified: true,
         },
-        {
-          name: "HubSpot",
-          url: "https://www.hubspot.com",
-          rating: 4.7,
-          verified: true,
-        },
-        {
-          name: "Monday.com",
-          url: "https://www.monday.com",
-          rating: 4.3,
-          verified: false,
-        },
+        
       ]}
     />
   )

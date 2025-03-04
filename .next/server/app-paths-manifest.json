@@ -2,7 +2,8 @@
   "/services/home/page": "app/services/home/page.js",
   "/page": "app/page.js",
   "/services/consulting/page": "app/services/consulting/page.js",
-  "/services/business-development/page": "app/services/business-development/page.js",
+  "/api/verify-phone/route": "app/api/verify-phone/route.js",
+  "/api/save-customer-data/route": "app/api/save-customer-data/route.js",
   "/services/food/page": "app/services/food/page.js",
-  "/api/suggest-service/route": "app/api/suggest-service/route.js"
+  "/services/business-development/page": "app/services/business-development/page.js"
 }

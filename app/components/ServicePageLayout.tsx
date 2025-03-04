@@ -34,8 +34,10 @@ export default function ServicePageLayout({
     isValidating: false,
     validationMessage: "",
   })
-  const [selectedSite, setSelectedSite] = useState(sites[0]?.url || "")
-  const selectedSiteData = sites.find(site => site.url === selectedSite)
+  const [selectedSite, setSelectedSite] = useState(sites[0]?.name || "")
+  const selectedSiteData = sites.find(site => site.name === selectedSite)
+  const [isSaving, setIsSaving] = useState(false)
+  const [saveError, setSaveError] = useState<string | null>(null)
 
   const validatePhone = (phone: string) => {
     // Basic phone validation - 10 digits
@@ -98,16 +100,73 @@ export default function ServicePageLayout({
   const isFormValid = 
     formData.name.trim() !== "" && 
     formData.isPhoneValid && 
-    formData.isPhoneVerified
+    formData.isPhoneVerified &&
+    selectedSite
 
-  const handleShare = () => {
-    if (isFormValid) {
-      if (navigator.share) {
-        navigator.share({
+  const saveCustomerData = async () => {
+    if (!isFormValid) return
+
+    setIsSaving(true)
+    setSaveError(null)
+
+    try {
+      const response = await fetch('/api/save-customer-data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          number: formData.phone,
+          company: selectedSite,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (data.status !== 'success') {
+        throw new Error(data.error || 'Failed to save data')
+      }
+
+      return true
+    } catch (error) {
+      console.error('Error saving customer data:', error)
+      setSaveError('Failed to save your information. Please try again.')
+      return false
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  const handleVisitSite = async () => {
+    if (!isFormValid) return
+
+    // Save data in background
+    saveCustomerData()
+    
+    // Open site immediately
+    if (selectedSiteData) {
+      window.open(selectedSiteData.url, "_blank")
+    }
+  }
+
+  const handleShare = async () => {
+    if (!isFormValid) return
+
+    // Save data in background
+    saveCustomerData()
+    
+    // Share immediately
+    if (navigator.share) {
+      try {
+        await navigator.share({
           title: name,
           text: `Check out ${name} service`,
           url: window.location.href,
         })
+      } catch (error) {
+        // User cancelled share
+        console.log('Share cancelled')
       }
     }
   }
@@ -173,7 +232,7 @@ export default function ServicePageLayout({
                 {sites.map((site, index) => (
                   <option 
                     key={index} 
-                    value={site.url}
+                    value={site.name}
                     className="bg-gray-800 text-white hover:bg-gray-700"
                   >
                     {site.name}
@@ -281,28 +340,39 @@ export default function ServicePageLayout({
               </div>
             </div>
           </div>
+          {saveError && (
+            <p className="text-red-400 mb-4">{saveError}</p>
+          )}
           <div className="flex flex-col md:flex-row gap-4">
             <button
-              onClick={() => window.open(selectedSite, "_blank")}
-              disabled={!isFormValid}
-              className={`px-6 py-3 rounded-lg transition-colors ${
-                isFormValid
+              onClick={handleVisitSite}
+              disabled={!isFormValid || isSaving}
+              className={`px-6 py-3 rounded-lg transition-colors flex items-center justify-center ${
+                isFormValid && !isSaving
                   ? "bg-electric-blue text-black hover:bg-blue-600"
                   : "bg-gray-500 text-gray-300 cursor-not-allowed"
               }`}
             >
-              Visit Site
+              {isSaving ? (
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black"></div>
+              ) : (
+                "Visit Site"
+              )}
             </button>
             <button
               onClick={handleShare}
-              disabled={!isFormValid}
-              className={`px-6 py-3 rounded-lg transition-colors ${
-                isFormValid
+              disabled={!isFormValid || isSaving}
+              className={`px-6 py-3 rounded-lg transition-colors flex items-center justify-center ${
+                isFormValid && !isSaving
                   ? "bg-electric-blue text-black hover:bg-blue-600"
                   : "bg-gray-500 text-gray-300 cursor-not-allowed"
               }`}
             >
-              Share
+              {isSaving ? (
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black"></div>
+              ) : (
+                "Share"
+              )}
             </button>
           </div>
         </div>

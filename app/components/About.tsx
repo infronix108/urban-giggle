@@ -100,7 +100,8 @@ export default function About() {
         body: JSON.stringify({
           name: formData.name,
           number: formData.number,
-          company: formData.company
+          company: formData.company,
+          sourceComponent: 'About'
         }),
       })
 

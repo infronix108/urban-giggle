@@ -5,14 +5,16 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYTtuvdPpopPoFYGMCy
 
 export async function POST(request: Request) {
   try {
-    const { name, number, company } = await request.json()
+    const { name, number, company, sourceComponent } = await request.json();
+
+    console.log('Incoming request data:', { name, number, company, sourceComponent });
 
     // Validate required fields
     if (!name || !number || !company) {
       return NextResponse.json({
         error: 'Missing required fields',
         status: 'error'
-      }, { status: 400 })
+      }, { status: 400 });
     }
 
     // Validate phone number format
@@ -21,16 +23,16 @@ export async function POST(request: Request) {
       return NextResponse.json({
         error: 'Invalid phone number format',
         status: 'error'
-      }, { status: 400 })
+      }, { status: 400 });
     }
+
+    // Set formattedCompany based on request source
+    const formattedCompany = sourceComponent === 'About' ? `inf_${company}` : company;
 
     // Get current date and time
     const date = new Date()
     const localDate = date.toISOString().split("T")[0] // YYYY-MM-DD
     const localTime = date.toTimeString().split(" ")[0] // HH:MM:SS
-
-    // Add _inf to the beginning of company name if not already present
-    const formattedCompany = company.startsWith('inf_') ? company : `inf_${company}`
 
     // Send data to Google Apps Script
     const response = await fetch(SCRIPT_URL, {
@@ -43,7 +45,8 @@ export async function POST(request: Request) {
         number,
         company: formattedCompany,
         date: localDate,
-        time: localTime
+        time: localTime,
+        source : sourceComponent === 'About' ? 'About' : 'Other',
       })
     })
 

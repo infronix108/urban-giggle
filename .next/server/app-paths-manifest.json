@@ -1,9 +1,8 @@
 {
-  "/services/home/page": "app/services/home/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
   "/page": "app/page.js",
+  "/services/home/page": "app/services/home/page.js",
   "/services/consulting/page": "app/services/consulting/page.js",
-  "/api/verify-phone/route": "app/api/verify-phone/route.js",
-  "/api/save-customer-data/route": "app/api/save-customer-data/route.js",
-  "/services/food/page": "app/services/food/page.js",
-  "/services/business-development/page": "app/services/business-development/page.js"
+  "/services/business-development/page": "app/services/business-development/page.js",
+  "/services/food/page": "app/services/food/page.js"
 }

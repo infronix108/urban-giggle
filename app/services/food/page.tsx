@@ -20,7 +20,12 @@ export default function FoodServicesPage() {
           rating: 4.8,
           verified: true,
         },
-        
+        {
+          name: "Chinatown Restaurant",
+          url: "https://www.chinatowncda.com",
+          rating: 4.5,
+          verified: false,
+        },
       ]}
     />
   )

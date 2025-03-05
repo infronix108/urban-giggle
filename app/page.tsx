@@ -1,22 +1,38 @@
-import Header from "./components/Header"
-import Hero from "./components/Hero"
-import ServicesGrid from "./components/ServicesGrid"
-import Testimonials from "./components/Testimonials"
-import Awards from "./components/Awards"
-import Footer from "./components/Footer"
+import Header from './components/Header'
+import Hero from './components/Hero'
+import ServicesGrid from './components/ServicesGrid'
+import ClientValidation from './components/ClientValidation'
+import Awards from './components/Awards'
+import About from './components/About'
+import Footer from './components/Footer'
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-black to-deep-blue text-white">
+    <main className="min-h-screen bg-deep-blue">
       <Header />
-      <main>
-        <Hero />
+      <Hero />
+      
+      {/* Client Validation Section */}
+      <section id="validation" className="py-20">
+        <ClientValidation />
+      </section>
+
+      {/* Services Grid */}
+      <section className="py-20">
         <ServicesGrid />
-        <Testimonials />
+      </section>
+
+      {/* Accolades Section */}
+      <section id="accolades" className="py-20">
         <Awards />
-      </main>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="py-20">
+        <About />
+      </section>
+
       <Footer />
-    </div>
+    </main>
   )
 }
-

@@ -1,70 +1,73 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Menu, X } from "lucide-react";
-import Image from "next/image"; 
+"use client"
+import { useState, useEffect } from "react"
+import Link from "next/link"
+import Image from "next/image"
 
 export default function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+      setScrolled(window.scrollY > 50)
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" })
+    }
+  }
 
   return (
-    <header
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? "bg-black/70 backdrop-blur-md" : ""
-      }`}
-    >
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/">
-          <Image src="/logo.jpg" alt="Infronix Logo" width={150} height={40} priority className="object-contain rounded-full" />
-        </Link>
-        <div className="hidden md:flex items-center space-x-6">
-          <nav className="flex space-x-6">
-            <Link href="#" className="text-gray-300 hover:text-electric-blue transition duration-300">
-              Services
-            </Link>
-            <Link href="#" className="text-gray-300 hover:text-electric-blue transition duration-300">
-              About
-            </Link>
-            <Link href="#" className="text-gray-300 hover:text-electric-blue transition duration-300">
-              Contact
-            </Link>
-          </nav>
-          <button className="bg-electric-blue text-black px-4 py-2 rounded-full hover:bg-electric-blue/80 transition duration-300">
-            Login
-          </button>
-        </div>
-        <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          {isMenuOpen ? <X className="text-electric-blue" /> : <Menu className="text-electric-blue" />}
-        </button>
-      </div>
-      {isMenuOpen && (
-        <div className="md:hidden bg-black/90 backdrop-blur-md">
-          <nav className="flex flex-col items-center py-4 space-y-4">
-            <Link href="#" className="text-gray-300 hover:text-electric-blue transition duration-300">
-              Services
-            </Link>
-            <Link href="#" className="text-gray-300 hover:text-electric-blue transition duration-300">
-              About
-            </Link>
-            <Link href="#" className="text-gray-300 hover:text-electric-blue transition duration-300">
-              Contact
-            </Link>
-            <button className="bg-electric-blue text-black px-4 py-2 rounded-full hover:bg-electric-blue/80 transition duration-300">
-              Login
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-deep-blue/90 backdrop-blur-lg" : ""}`}>
+      <nav className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-24">
+          {/* Logo */}
+          <Link href="/" className="flex items-center">
+            <div className="w-40 h-16 relative rounded-[2.5rem] overflow-hidden">
+              <Image
+                src="/logo.jpg"
+                alt="Infronix Logo"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          </Link>
+
+          <div className="hidden md:flex space-x-8">
+            <button
+              onClick={() => scrollToSection("clientValidation")}
+              className="text-white hover:text-electric-blue transition-colors"
+            >
+              Client Validation
             </button>
-          </nav>
+            <button
+              onClick={() => scrollToSection("awards")}
+              className="text-white hover:text-electric-blue transition-colors"
+            >
+              Our Accolades
+            </button>
+            <button
+              onClick={() => scrollToSection("about")}
+              className="text-white hover:text-electric-blue transition-colors"
+            >
+              About Us
+            </button>
+          </div>
+
+          <div className="md:hidden">
+            <button className="text-white">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
         </div>
-      )}
+      </nav>
     </header>
-  );
+  )
 }

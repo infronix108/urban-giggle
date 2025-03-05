@@ -15,22 +15,22 @@ export default function GamesServicesPage() {
       image="https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?auto=format&fit=crop&q=80&w=1600"
       sites={[
         {
-          name: "PBS Kids Games",
-          url: "https://pbskids.org/games",
+          name: "Pogo",
+          url: "https://www.pogo.com/",
           rating: 4.9,
           verified: true,
         },
         {
-          name: "ABCmouse",
-          url: "https://www.abcmouse.com",
+          name: "Addicting Games",
+          url: "https://www.addictinggames.com/",
           rating: 4.7,
           verified: true,
         },
         {
-          name: "Cool Math Games",
-          url: "https://www.coolmathgames.com",
-          rating: 4.2,
-          verified: false,
+          name: "Free Online Games",
+          url: "https://www.freeonlinegames.com/",
+          rating: 4.4,
+          verified: true,
         },
       ]}
     />

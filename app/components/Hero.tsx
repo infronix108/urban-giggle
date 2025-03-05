@@ -66,10 +66,11 @@ export default function Hero() {
   return (
     <div className="relative h-screen flex items-center justify-center overflow-hidden">
       <Image
-        src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&q=80&w=1920&h=1080"
+        src="/images/hero-bg.jpg"
         alt="Luxury background"
-        layout="fill"
-        objectFit="cover"
+        fill
+        className="object-cover"
+        priority
         quality={100}
       />
       <div className="absolute inset-0 bg-black/50" />

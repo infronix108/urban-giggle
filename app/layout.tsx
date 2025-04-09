@@ -4,6 +4,7 @@ import { Poppins } from "next/font/google"
 import type React from "react"
 import WelcomePopup from "./components/WelcomePopup"
 
+
 const poppins = Poppins({
   weight: ["300", "400", "600", "700"],
   subsets: ["latin"],

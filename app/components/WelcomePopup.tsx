@@ -16,12 +16,8 @@ export default function WelcomePopup() {
   ]
 
   useEffect(() => {
-    const hasSeenPopup = localStorage.getItem("hasSeenPopup")
-    if (!hasSeenPopup) {
-      setIsVisible(true)
-      localStorage.setItem("hasSeenPopup", "true")
-      setTagline(taglines[Math.floor(Math.random() * taglines.length)])
-    }
+    setIsVisible(true)
+    setTagline(taglines[Math.floor(Math.random() * taglines.length)])
   }, [])
 
   if (!isVisible) return null

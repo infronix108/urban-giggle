@@ -7,16 +7,12 @@ export default function WelcomePopup() {
   const [tagline, setTagline] = useState("")
 
   const taglines = [
-    "No groceries. No meds. No problem. Infronix delivers survival.",
-    "Modern life is broken. We deliver the patches.",
-    "You're not lazy. The system is. Let Infronix handle it.",
-    "Self-care is hard. Infronix makes it easy.",
-    "Don’t panic—order. Infronix is your soft landing.",
-    "Life's a glitch. We're the bug fix.",
-    "Running on coffee and despair? Cool. We'll bring the rest.",
-    "Infronix: For when adulting is not in your skill tree.",
-    "You're burnt out. We're the recharge button.",
-    "When motivation ghosts you, Infronix shows up."
+    "Your fridge is empty. Your soul too. Infronix delivers both.",
+    "Sleep-deprived, broke & burnt out? Good. You're ready for Infronix.",
+    "When meds, food, and sanity are all out of stock... Infronix isn’t.",
+    "You could try doing everything alone. Or... you could try not suffering.",
+    "Infronix: Because adulting is a full-time scam.",
+    "Depression can't cook. Infronix can.",
   ]
 
   useEffect(() => {
@@ -31,36 +27,39 @@ export default function WelcomePopup() {
   if (!isVisible) return null
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-[#1f1f1f] rounded-2xl p-8 max-w-lg w-full relative shadow-2xl border border-yellow-500/20 animate-fade-in-up">
-        <button 
-          onClick={() => setIsVisible(false)}
-          className="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl"
-        >
-          &times;
-        </button>
-        
-        <h2 className="text-3xl font-bold text-yellow-400 mb-2 tracking-tight">
+    <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 animate-fade-in">
+      <div className="bg-gray-900 rounded-2xl shadow-2xl p-8 max-w-md w-full relative animate-fade-in-up border border-yellow-500">
+        <h2 className="text-3xl font-bold text-yellow-400 mb-4 text-center">
           Welcome to Infronix 👁️‍🗨️
         </h2>
-        <p className="text-gray-300 italic text-base mb-6">{tagline}</p>
-        
+        <p className="text-gray-300 italic text-center mb-6">{tagline}</p>
+
         <ul className="space-y-2 mb-6 text-sm text-gray-200">
-          <li>🍱 Food – for when cooking feels illegal</li>
-          <li>💊 Medicine – to keep functioning</li>
-          <li>🧹 Cleaning – because chaos isn't cozy</li>
-          <li>🔧 Repairs – tech, taps, emotional damage</li>
-          <li>🎁 Gifts – perform love, get rewards</li>
-          <li>🛏️ Hotels – escape responsibly</li>
-          <li>🎮 Tech Setup – rage-proof installs</li>
-          <li>💆 Spa – fake peace, real glow-up</li>
-          <li>🛒 Groceries – silence the fridge’s anxiety</li>
-          <li>🚖 Travel – teleport from burnout</li>
+          {[
+            "🍱 Food – for when cooking feels illegal",
+            "💊 Medicine – to survive society",
+            "🧹 Cleaning – because depression isn't tidy",
+            "🔧 Repairs – tech, taps, trust issues",
+            "🎁 Gifts – fake affection, real fast",
+            "🛏️ Hotels – run away, recharge, return maybe",
+            "🎮 Tech Setup – for those who rage at routers",
+            "💆 Spa – fake peace, real glow",
+            "🛒 Groceries – silence the fridge's emptiness",
+            "🚖 Travel – escape mode: unlocked"
+          ].map((item, i) => (
+            <li key={i}>{item}</li>
+          ))}
         </ul>
 
-        <p className="text-gray-500 text-xs italic">
-          Infronix isn’t just a service. It’s survival, in style.<br />
-          Let go. We’ve got you.
+        <button
+          onClick={() => setIsVisible(false)}
+          className="w-full bg-yellow-500 text-gray-900 font-bold py-3 rounded-xl shadow-lg hover:bg-yellow-400 transition-all animate-pulse hover:scale-105 active:scale-95"
+        >
+          Dependency acknowledged. Let the chaos continue.
+        </button>
+
+        <p className="text-gray-600 text-xs text-center mt-4 italic">
+          Free will is overrated anyway.
         </p>
       </div>
     </div>

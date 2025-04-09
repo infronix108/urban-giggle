@@ -7,24 +7,23 @@ export default function WelcomePopup() {
   const [tagline, setTagline] = useState("")
 
   const taglines = [
-    "Your fridge is empty. Your soul too. Infronix delivers both.",
-    "Life is hard. But at least groceries don't have to be.",
-    "Lost the will to cook? Same. We've got food.",
-    "When meds, food, and sanity are all out of stock... Infronix isn't.",
-    "It's okay to fall apart. Just don't forget to order tissues through Infronix.",
-    "Adulting is a scam. Outsource it to Infronix.",
-    "You could try doing everything alone. Or... you could try not suffering.",
-    "Depression can't cook. Infronix can.",
-    "Your motivation left. Infronix enters.",
-    "Sleep-deprived, broke & burnt out? Good. You're ready for Infronix."
+    "No groceries. No meds. No problem. Infronix delivers survival.",
+    "Modern life is broken. We deliver the patches.",
+    "You're not lazy. The system is. Let Infronix handle it.",
+    "Self-care is hard. Infronix makes it easy.",
+    "Don’t panic—order. Infronix is your soft landing.",
+    "Life's a glitch. We're the bug fix.",
+    "Running on coffee and despair? Cool. We'll bring the rest.",
+    "Infronix: For when adulting is not in your skill tree.",
+    "You're burnt out. We're the recharge button.",
+    "When motivation ghosts you, Infronix shows up."
   ]
 
   useEffect(() => {
-    // Show popup on first visit or based on your logic
-    const hasSeenPopup = localStorage.getItem('hasSeenPopup')
+    const hasSeenPopup = localStorage.getItem("hasSeenPopup")
     if (!hasSeenPopup) {
       setIsVisible(true)
-      localStorage.setItem('hasSeenPopup', 'true')
+      localStorage.setItem("hasSeenPopup", "true")
       setTagline(taglines[Math.floor(Math.random() * taglines.length)])
     }
   }, [])
@@ -32,8 +31,8 @@ export default function WelcomePopup() {
   if (!isVisible) return null
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 rounded-xl p-6 max-w-md w-full relative animate-fade-in-up">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-[#1f1f1f] rounded-2xl p-8 max-w-lg w-full relative shadow-2xl border border-yellow-500/20 animate-fade-in-up">
         <button 
           onClick={() => setIsVisible(false)}
           className="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl"
@@ -41,29 +40,27 @@ export default function WelcomePopup() {
           &times;
         </button>
         
-        <h2 className="text-2xl font-bold text-yellow-400 mb-2">Welcome to Infronix 👁️‍🗨️</h2>
-        <p className="text-gray-300 italic mb-4">{tagline}</p>
+        <h2 className="text-3xl font-bold text-yellow-400 mb-2 tracking-tight">
+          Welcome to Infronix 👁️‍🗨️
+        </h2>
+        <p className="text-gray-300 italic text-base mb-6">{tagline}</p>
         
-        <ul className="space-y-2 mb-4">
-          {[
-            "🍱 Food – for when cooking feels illegal",
-            "💊 Medicine – to survive society",
-            "🧹 Cleaning – because depression isn't tidy",
-            "🔧 Repairs – tech, taps, trust issues",
-            "🎁 Gifts – fake affection, real fast",
-            "🛏️ Hotels – run away, recharge, return maybe",
-            "🎮 Tech Setup – for those who rage at routers",
-            "💆 Spa – fake peace, real glow",
-            "🛒 Groceries – silence the fridge's emptiness",
-            "🚖 Travel – escape mode: unlocked"
-          ].map((item, i) => (
-            <li key={i} className="text-gray-200 text-sm">{item}</li>
-          ))}
+        <ul className="space-y-2 mb-6 text-sm text-gray-200">
+          <li>🍱 Food – for when cooking feels illegal</li>
+          <li>💊 Medicine – to keep functioning</li>
+          <li>🧹 Cleaning – because chaos isn't cozy</li>
+          <li>🔧 Repairs – tech, taps, emotional damage</li>
+          <li>🎁 Gifts – perform love, get rewards</li>
+          <li>🛏️ Hotels – escape responsibly</li>
+          <li>🎮 Tech Setup – rage-proof installs</li>
+          <li>💆 Spa – fake peace, real glow-up</li>
+          <li>🛒 Groceries – silence the fridge’s anxiety</li>
+          <li>🚖 Travel – teleport from burnout</li>
         </ul>
-        
+
         <p className="text-gray-500 text-xs italic">
-          Infronix doesn't need you. But be honest... you need us.
-          <br />Stay. Suffer less.
+          Infronix isn’t just a service. It’s survival, in style.<br />
+          Let go. We’ve got you.
         </p>
       </div>
     </div>

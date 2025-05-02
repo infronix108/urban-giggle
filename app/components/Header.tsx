@@ -71,7 +71,9 @@ export default function Header() {
               >
                 About Us
               </button>
-              <LatestLaunchesDropdown />
+              <span className="text-white hover:text-electric-blue transition-colors pt-1">
+                <LatestLaunchesDropdown />
+              </span>
               {isAuthenticated ? (
                 <button
                   onClick={() => {

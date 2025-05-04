@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  swcMinify: false, // Disable SWC minification
   images: {
     remotePatterns: [
       {
@@ -9,12 +8,6 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-  },
-  experimental: {
-    // Disable experimental features that might cause issues
-    webpackBuildWorker: false,
-    parallelServerCompiles: false,
-    parallelServerBuildTraces: false,
   },
 };
 

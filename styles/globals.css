@@ -85,6 +85,15 @@ body {
 }
 
 @layer base {
+  html, body {
+    min-height: 100vh;
+    height: 100%;
+    background: linear-gradient(135deg, #0f172a 0%, #3b0764 100%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color-scheme: dark;
+  }
   * {
     @apply border-border;
   }

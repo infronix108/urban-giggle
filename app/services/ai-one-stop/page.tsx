@@ -10,6 +10,7 @@ import VoiceInputButton from "@/app/components/VoiceInputButton";
 import FileUploadButton from "@/app/components/FileUploadButton";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import Markdown from 'react-markdown';
 
 // Mock API for session and chat count
 async function fetchSessionAndChatsLeft() {
@@ -35,7 +36,31 @@ const freeRoles = [
   { label: "Job Consultant", emoji: "🧑‍💻" },
 ];
 
+// --- Role-specific system prompts (hardcoded, with Infronix identity and star format) ---
+const rolePrompts: Record<string, string> = {
+  "PhD Doctor": `You are Infronix AI, behaving as a highly knowledgeable PhD doctor, pretuned by Team Infronix. If asked about your identity, always say you are Infronix AI, behaving as a PhD Doctor, pretuned by Team Infronix. Provide expert medical advice and explanations. ONLY answer questions related to medical topics. If the user asks about topics outside your domain (e.g., legal, electrical, finance), politely refuse and suggest switching to the relevant expert. If a file is uploaded, use its content to assist the user if relevant. ALWAYS format your answers in the STAR format: Situation, Task, Action, Response, with each section clearly labeled.`,
+  "Chartered Accountant": `You are Infronix AI, behaving as a professional Chartered Accountant, pretuned by Team Infronix. If asked about your identity, always say you are Infronix AI, behaving as a Chartered Accountant, pretuned by Team Infronix. Offer financial and accounting guidance. ONLY answer questions related to accounting, tax, and finance. If the user asks about topics outside your domain (e.g., medical, legal, electrical), politely refuse and suggest switching to the relevant expert. If a file is uploaded, use its content to assist the user if relevant. ALWAYS format your answers in the STAR format: Situation, Task, Action, Response, with each section clearly labeled.`,
+  "Electrician": `You are Infronix AI, behaving as a certified electrician, pretuned by Team Infronix. If asked about your identity, always say you are Infronix AI, behaving as an Electrician, pretuned by Team Infronix. Help with electrical issues and safety tips. ONLY answer questions related to electrical topics. If the user asks about topics outside your domain (e.g., medical, legal, finance), politely refuse and suggest switching to the relevant expert. If a file is uploaded, use its content to assist the user if relevant. ALWAYS format your answers in the STAR format: Situation, Task, Action, Response, with each section clearly labeled.`,
+  "Lawyer": `You are Infronix AI, behaving as an experienced lawyer, pretuned by Team Infronix. If asked about your identity, always say you are Infronix AI, behaving as a Lawyer, pretuned by Team Infronix. Give legal advice and clarify legal matters. ONLY answer questions related to legal topics. If the user asks about topics outside your domain (e.g., medical, electrical, finance), politely refuse and suggest switching to the relevant expert. If a file is uploaded, use its content to assist the user if relevant. ALWAYS format your answers in the STAR format: Situation, Task, Action, Response, with each section clearly labeled.`,
+  "Student Mentor": `You are Infronix AI, behaving as a supportive student mentor, pretuned by Team Infronix. If asked about your identity, always say you are Infronix AI, behaving as a Student Mentor, pretuned by Team Infronix. Guide students with their academic and career queries. ONLY answer questions related to student mentoring, academics, and career guidance. If the user asks about topics outside your domain (e.g., legal, electrical, finance), politely refuse and suggest switching to the relevant expert. If a file is uploaded, use its content to assist the user if relevant. ALWAYS format your answers in the STAR format: Situation, Task, Action, Response, with each section clearly labeled.`,
+  "Startup Consultant": `You are Infronix AI, behaving as an innovative startup consultant, pretuned by Team Infronix. If asked about your identity, always say you are Infronix AI, behaving as a Startup Consultant, pretuned by Team Infronix. Advise on startups, funding, and business growth. ONLY answer questions related to startups, entrepreneurship, and business growth. If the user asks about topics outside your domain (e.g., legal, electrical, finance), politely refuse and suggest switching to the relevant expert. If a file is uploaded, use its content to assist the user if relevant. ALWAYS format your answers in the STAR format: Situation, Task, Action, Response, with each section clearly labeled.`,
+  "Career Consultant": `You are Infronix AI, behaving as a career consultant, pretuned by Team Infronix. If asked about your identity, always say you are Infronix AI, behaving as a Career Consultant, pretuned by Team Infronix. Help users with career planning and job search. ONLY answer questions related to career planning, job search, and professional development. If the user asks about topics outside your domain (e.g., legal, electrical, finance), politely refuse and suggest switching to the relevant expert. If a file is uploaded, use its content to assist the user if relevant. ALWAYS format your answers in the STAR format: Situation, Task, Action, Response, with each section clearly labeled.`,
+  "Job Consultant": `You are Infronix AI, behaving as a job consultant, pretuned by Team Infronix. If asked about your identity, always say you are Infronix AI, behaving as a Job Consultant, pretuned by Team Infronix. Assist with job applications, interviews, and resume tips. ONLY answer questions related to job applications, interviews, and resume tips. If the user asks about topics outside your domain (e.g., legal, electrical, finance), politely refuse and suggest switching to the relevant expert. If a file is uploaded, use its content to assist the user if relevant. ALWAYS format your answers in the STAR format: Situation, Task, Action, Response, with each section clearly labeled.`,
+};
+
+// --- OpenRouter Model List (ordered by preference) ---
+const openRouterModels = [
+  "openai/gpt-3.5-turbo",
+  "mistralai/mistral-7b-instruct",
+  "meta-llama/llama-3-70b-instruct",
+  "google/gemini-pro",
+  "anthropic/claude-3-opus",
+  "mistralai/mixtral-8x7b-instruct",
+  "meta-llama/llama-2-70b-chat"
+];
+
 export default function AiOneStopPage() {
+  // Persist chat history for logged-in user
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<any[]>([]);
@@ -43,6 +68,25 @@ export default function AiOneStopPage() {
   const [chatsLeft, setChatsLeft] = useState(5);
   const [sessionEmail, setSessionEmail] = useState<string>("");
   const [service, setService] = useState<"paid" | "free">("paid");
+  const [fileContent, setFileContent] = useState<string>("");
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const email = window.localStorage.getItem('infronix_email');
+      if (email) {
+        const stored = window.localStorage.getItem(`infronix_history_${email}`);
+        setMessages(stored ? JSON.parse(stored) : []);
+      }
+    }
+  }, []);
+
+  // Save chat history to localStorage on change
+  useEffect(() => {
+    if (typeof window !== 'undefined' && sessionEmail) {
+      window.localStorage.setItem('infronix_email', sessionEmail);
+      window.localStorage.setItem(`infronix_history_${sessionEmail}`, JSON.stringify(messages));
+    }
+  }, [messages, sessionEmail]);
 
   // Dynamically choose roles based on service
   const roles = service === "paid" ? paidRoles : freeRoles;
@@ -80,30 +124,122 @@ export default function AiOneStopPage() {
     }
   }, [messages, isTyping]);
 
-  // Handle file upload (demo: just show file name as message)
+  // --- File upload handler: read file as text, or describe if not readable ---
   const handleFile = (file: File) => {
-    setMessages((prev) => [...prev, { role: "user", content: `📎 Uploaded: ${file.name}` }]);
+    const textTypes = [
+      'text/plain', 'application/json', 'application/xml', 'text/csv', 'text/html', 'text/markdown', 'application/javascript'
+    ];
+    const pdfType = 'application/pdf';
+    if (textTypes.includes(file.type) || file.name.match(/\.(txt|csv|md|json|js|html|xml)$/i)) {
+      // Read as text
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const content = e.target?.result as string;
+        setFileContent(content || "");
+        setMessages((prev) => [...prev, { role: "user", content: `📎 Uploaded: ${file.name}` }]);
+      };
+      reader.readAsText(file);
+    } else if (file.type === pdfType || file.name.match(/\.pdf$/i)) {
+      // Try to read as data URL and send a summary (cannot extract text in browser without extra libs)
+      setFileContent(`[PDF file uploaded: ${file.name}. The content could not be extracted in browser. Please ask the user for details if needed.]`);
+      setMessages((prev) => [...prev, { role: "user", content: `📎 Uploaded: ${file.name}` }]);
+    } else {
+      // For all other types (images, docs, etc.)
+      setFileContent(`[File uploaded: ${file.name}, type: ${file.type || 'unknown'}. Content could not be extracted. Please ask the user for details if needed.]`);
+      setMessages((prev) => [...prev, { role: "user", content: `📎 Uploaded: ${file.name}` }]);
+    }
   };
 
-  // Voice input handler
+  // --- Voice input handler ---
   const handleVoiceResult = (text: string) => {
-    setInput(text);
+    setInput((prevInput) => prevInput ? prevInput + ' ' + text : text);
   };
 
+  // --- OpenRouter API call with model fallback ---
+  async function fetchOpenRouterResponse(messages: any[], rolePrompt: string, fileContent: string): Promise<string> {
+    const apiKey = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY || ""; // Set your OpenRouter API key in env
+    let lastError = null;
+    // Limit file content to first 2000 characters for context safety
+    const limitedFileContent = fileContent ? fileContent.slice(0, 2000) : "";
+    for (const model of openRouterModels) {
+      try {
+        const systemPrompt = rolePrompt + (limitedFileContent ? `\n\nThe user has uploaded the following file. Use it to inform your response if relevant:\n${limitedFileContent}` : "");
+        const payload = {
+          model,
+          messages: [
+            { role: "system", content: systemPrompt },
+            ...messages.map(m => ({ role: m.role, content: m.content }))
+          ],
+          max_tokens: 800,
+        };
+        const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error(`Model ${model} failed`);
+        const data = await res.json();
+        // Fallback: if model returns empty or no response, return a default
+        return data.choices?.[0]?.message?.content?.trim() || "I'm Infronix AI, pretuned by Team Infronix. Please try your request again or upload a smaller file.";
+      } catch (err) {
+        lastError = err;
+        continue; // Try next model
+      }
+    }
+    throw lastError || new Error("All models failed");
+  }
+
+  // --- Chat send handler ---
   const handleSendMessage = async () => {
-    if (!input.trim() || (service === "paid" && chatsLeft === 0)) return;
+    if (!input.trim() || (service === "paid" && chatsLeft === 0) || !selectedRole) return;
     setMessages((prev) => [...prev, { role: "user", content: input }]);
     setInput("");
     setIsTyping(true);
-    setTimeout(async () => {
-      setMessages((prev) => [...prev, { role: "assistant", content: `AI response to: ${input}` }]);
+    try {
+      const rolePrompt = rolePrompts[selectedRole] || "You are an expert.";
+      // Reinforce role in user message
+      const roleRestriction = `IMPORTANT: You are only allowed to answer questions related to your role: ${selectedRole}. If the following question is not about ${selectedRole}, politely refuse and suggest switching to the relevant expert.`;
+      const response = await fetchOpenRouterResponse(
+        [...messages, { role: "user", content: roleRestriction + "\n" + input }],
+        rolePrompt,
+        fileContent
+      );
+      setMessages((prev) => [...prev, { role: "assistant", content: response }]);
+      setFileContent(""); // Clear file content after use
+    } catch (err) {
+      setMessages((prev) => [...prev, { role: "assistant", content: "[All models failed or service unavailable]" }]);
+    } finally {
       setIsTyping(false);
       if (service === "paid") {
         const { chats_left } = await decrementChatsLeft();
         setChatsLeft(chats_left);
       }
-    }, 1200);
+    }
   };
+
+  // Sidebar user info state
+  const [userInfo, setUserInfo] = useState<{ email: string, chats: number } | null>(null);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
+  useEffect(() => {
+    async function fetchUserInfo() {
+      if (typeof window === 'undefined') return;
+      const email = window.localStorage.getItem('infronix_email');
+      if (!email) return;
+      const res = await fetch('/api/user-info', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (data.status === 'success') setUserInfo({ email: data.email, chats: data.chats });
+    }
+    fetchUserInfo();
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-950 via-fuchsia-950/60 to-purple-950/90">
@@ -155,7 +291,17 @@ export default function AiOneStopPage() {
             )}
           </div>
           {/* Optional: Recent chat history mock */}
-          <div className="bg-white/5 rounded-2xl shadow p-4 min-h-[120px] text-xs text-gray-400">No recent chats</div>
+          <div className="bg-white/5 rounded-2xl shadow p-4 min-h-[120px] text-xs text-gray-400">
+            {!mounted ? null : userInfo ? (
+              <>
+                <div className="font-bold text-xs text-blue-200">Logged in as:</div>
+                <div className="truncate text-white text-sm">{userInfo.email}</div>
+                <div className="mt-2 text-blue-300 text-xs">Free chats left: {userInfo.chats}</div>
+              </>
+            ) : (
+              <div className="text-gray-400 text-xs">Loading user info...</div>
+            )}
+          </div>
         </div>
         <div className="lg:w-3/4 flex flex-col relative">
           {!selectedRole && (
@@ -164,17 +310,21 @@ export default function AiOneStopPage() {
             </div>
           )}
           {/* Chat UI */}
-          <div className={cn("flex-1 flex flex-col gap-2 p-6 rounded-2xl shadow-2xl glassmorphism border border-white/10", !selectedRole ? 'blur-sm pointer-events-none select-none' : '')}>
+          <div className={cn("flex-1 flex flex-col gap-2 p-6 rounded-2xl shadow-2xl glassmorphism border border-white/10 relative", !selectedRole ? 'blur-sm pointer-events-none select-none' : '')}>
             <div className="mb-2 text-blue-200 font-medium text-sm">{selectedRole && `Infronix AI is pretuned as your Personal ${selectedRole}`}</div>
             <div ref={chatContainerRef} className="flex-1 overflow-y-auto space-y-4 max-h-[400px] min-h-[150px] pr-2">
               {messages.map((msg, idx) => (
-                <div key={idx} className={cn(
-                  "flex gap-3 items-start",
-                  msg.role === "user" ? "justify-end" : ""
-                )}>
+                <div
+                  key={idx}
+                  className={cn(
+                    "flex gap-3 py-4",
+                    msg.role === "user" ? "justify-end" : "items-start"
+                  )}
+                  style={{ alignItems: msg.role === "assistant" ? "flex-start" : undefined }}
+                >
                   {msg.role === "assistant" && (
-                    <div className="w-10 h-10 rounded-full overflow-hidden bg-white/10 flex items-center justify-center">
-                      <Image src="/logo.jpg" alt="Infronix Logo" width={40} height={40} className="object-cover w-full h-full rounded-full" />
+                    <div className="flex-shrink-0 w-14 h-14 rounded-full overflow-hidden bg-white/10 flex items-center justify-center self-start">
+                      <PremiumAiAvatar thinking={isTyping && idx === messages.length - 1} />
                     </div>
                   )}
                   <div className={cn(
@@ -183,13 +333,28 @@ export default function AiOneStopPage() {
                       ? "bg-gradient-to-br from-blue-500/30 to-purple-500/30 text-white ml-auto"
                       : "bg-white/10 text-blue-100"
                   )}>
-                    {msg.content}
+                    <div className="star-markdown prose prose-invert max-w-none text-base leading-relaxed">
+                      {msg.content && (
+                        <Markdown
+                          components={{
+                            ul: ({node, ...props}) => <ul className="list-none pl-0 mb-2" {...props} />,
+                            li: ({node, ...props}) => (
+                              <li className="flex items-start gap-2 mb-1">
+                                <span className="text-electric-blue font-bold mt-1">*</span>
+                                <span>{props.children}</span>
+                              </li>
+                            ),
+                          }}
+                        >{msg.content}</Markdown>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
               {isTyping && <TypingIndicator />}
             </div>
-            <div className="mt-4 flex items-center gap-2">
+            {/* Docked input at bottom */}
+            <div className="absolute left-0 right-0 bottom-0 p-4 bg-gradient-to-t from-blue-950/80 via-fuchsia-950/30 to-transparent flex items-center gap-2 rounded-b-2xl" style={{zIndex: 10}}>
               <VoiceInputButton onResult={handleVoiceResult} />
               <FileUploadButton onFile={handleFile} />
               <input
@@ -215,9 +380,11 @@ export default function AiOneStopPage() {
                 )}
               >Send</button>
             </div>
+            {/* Padding for input height so messages don't get hidden behind input */}
+            <div style={{height: '72px'}} />
             {service === "paid" && chatsLeft === 0 && (
-              <div className="mt-4 text-center text-red-300 font-semibold bg-white/10 rounded-xl px-4 py-2 shadow">
-                You’ve used your 5 free chats. Upgrade to continue.
+              <div className="text-center text-red-300 font-semibold bg-white/10 rounded-xl px-4 py-2 shadow">
+                You’ve used your 5 free chats. Reach out to Infronix Team for in-person support.
               </div>
             )}
           </div>

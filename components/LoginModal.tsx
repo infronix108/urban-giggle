@@ -4,18 +4,24 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { toast } from "react-hot-toast"
 
+import { useRouter } from "next/navigation"
+
 interface LoginModalProps {
   isOpen: boolean
   onClose: () => void
   onLoginSuccess: () => void
+  redirectPath?: string
 }
 
 interface LoginResponse {
-  status: string
-  message?: string
+  status: string;
+  message?: string;
+  token?: string;
+  email?: string;
 }
 
-export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginModalProps) {
+export default function LoginModal({ isOpen, onClose, onLoginSuccess, redirectPath }: LoginModalProps) {
+  const router = useRouter();
   const [step, setStep] = useState(1)
   const [email, setEmail] = useState("")
   const [otp, setOtp] = useState("")
@@ -89,10 +95,17 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
       const data: LoginResponse = await response.json()
 
       if (data.status === "success") {
-        localStorage.setItem("infronix_user", email)
+        if (data.token && data.email) {
+          window.localStorage.setItem('infronix_email', data.email);
+          window.localStorage.setItem('infronix_token', data.token);
+        }
         toast.success("Login successful!")
         onLoginSuccess()
-        onClose()
+        if (redirectPath) {
+          router.push(redirectPath)
+        } else {
+          onClose()
+        }
       } else {
         setError(data.message || "Invalid or expired OTP")
       }

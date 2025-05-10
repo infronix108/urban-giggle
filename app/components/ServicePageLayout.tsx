@@ -18,6 +18,8 @@ interface ServicePageProps {
   }[]
 }
 
+import AuthGuard from "../services/authGuard";
+
 export default function ServicePageLayout({
   name,
   description,

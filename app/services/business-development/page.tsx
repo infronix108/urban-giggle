@@ -1,8 +1,11 @@
 import ServicePageLayout from "@/app/components/ServicePageLayout"
 
+import AuthGuard from "../authGuard";
+
 export default function BusinessDevelopmentPage() {
   return (
-    <ServicePageLayout
+    <AuthGuard>
+      <ServicePageLayout
       name="Business Development Digital Services"
       description="Accelerate your business growth with our cutting-edge digital solutions and business development services. We help organizations leverage technology and innovation to achieve their business objectives. From digital transformation to market expansion strategies, our comprehensive services empower businesses to thrive in the digital age."
       process={[

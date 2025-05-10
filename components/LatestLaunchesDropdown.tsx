@@ -32,14 +32,9 @@ const services: Service[] = [
     description: "Architecture, Event Management, Decoration"
   },
   {
-    title: "Infronix AI - Professional Support",
+    title: "Infronix One Stop AI",
     slug: "ai-one-stop",
-    description: "Ask anything — 3 free expert consults"
-  },
-  {
-    title: "Infronix AI - Career Support",
-    slug: "career-support",
-    description: "Students can talk to advisors about career"
+    description: "Expert support for all your needs"
   }
 ]
 

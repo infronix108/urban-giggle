@@ -3,9 +3,12 @@
 import { motion } from "framer-motion"
 import Image from "next/image"
 
+import AuthGuard from "../authGuard";
+
 export default function BrokeragePage() {
   return (
-    <div className="min-h-screen bg-deep-blue">
+    <AuthGuard>
+      <div className="min-h-screen bg-deep-blue">
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-16">
         <motion.div

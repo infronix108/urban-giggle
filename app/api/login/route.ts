@@ -37,6 +37,13 @@ export async function POST(request: Request) {
       return NextResponse.json(data, { status: 400 });
     }
 
+    // Frontend: on successful OTP verification, store both email and token in localStorage
+    // Example:
+    // if (data.token) {
+    //   window.localStorage.setItem('infronix_email', data.email);
+    //   window.localStorage.setItem('infronix_token', data.token);
+    // }
+
     return NextResponse.json(data);
 
   } catch (error) {

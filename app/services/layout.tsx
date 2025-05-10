@@ -10,19 +10,33 @@ export default function ServicesLayout({
   children: React.ReactNode
 }) {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
-  const router = useRouter()
+  const router = useRouter();
+  const [redirectPath, setRedirectPath] = useState<string>("");
 
   useEffect(() => {
-    const isAuthenticated = !!localStorage.getItem("infronix_user")
-    if (!isAuthenticated) {
-      setIsLoginModalOpen(true)
-    }
-  }, [])
+    // Session is valid if both email and token exist
+    const checkSession = () => {
+      const email = localStorage.getItem("infronix_email");
+      const token = localStorage.getItem("infronix_token");
+      const validSession = !!email && !!token;
+      if (!validSession) {
+        setRedirectPath(window.location.pathname + window.location.search);
+        setIsLoginModalOpen(true);
+      } else {
+        setIsLoginModalOpen(false);
+      }
+    };
+    checkSession();
+    window.addEventListener('storage', checkSession);
+    return () => window.removeEventListener('storage', checkSession);
+  }, [router]);
+
+
 
   const handleLoginSuccess = () => {
-    setIsLoginModalOpen(false)
-    router.refresh()
-  }
+    setIsLoginModalOpen(false);
+    router.refresh();
+  };
 
   return (
     <>
@@ -30,10 +44,11 @@ export default function ServicesLayout({
       <LoginModal
         isOpen={isLoginModalOpen}
         onClose={() => {
-          router.push("/")
+          router.push("/");
         }}
         onLoginSuccess={handleLoginSuccess}
+        redirectPath={redirectPath}
       />
     </>
-  )
+  );
 }

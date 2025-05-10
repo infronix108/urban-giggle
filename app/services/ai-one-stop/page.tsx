@@ -229,14 +229,21 @@ export default function AiOneStopPage() {
     async function fetchUserInfo() {
       if (typeof window === 'undefined') return;
       const email = window.localStorage.getItem('infronix_email');
-      if (!email) return;
+      const token = window.localStorage.getItem('infronix_token');
+      if (!email || !token) return;
       const res = await fetch('/api/user-info', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, token }),
       });
       const data = await res.json();
       if (data.status === 'success') setUserInfo({ email: data.email, chats: data.chats });
+      else if (data.status === 'error' && typeof window !== 'undefined') {
+        // Session expired or invalid, clear and redirect to login
+        window.localStorage.removeItem('infronix_email');
+        window.localStorage.removeItem('infronix_token');
+        window.location.href = '/';
+      }
     }
     fetchUserInfo();
   }, []);

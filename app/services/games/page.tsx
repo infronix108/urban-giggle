@@ -1,8 +1,10 @@
 import ServicePageLayout from "@/app/components/ServicePageLayout"
+import AuthGuard from "../authGuard";
 
 export default function GamesServicesPage() {
   return (
-    <ServicePageLayout
+    <AuthGuard>
+      <ServicePageLayout
       name="Games for Kids"
       description="Discover a world of educational and entertaining games designed specifically for children. Our curated selection of online games promotes learning, creativity, and cognitive development while ensuring a safe and enjoyable gaming experience. From puzzle games to interactive learning adventures, we provide age-appropriate content that makes learning fun."
       process={[
@@ -34,5 +36,6 @@ export default function GamesServicesPage() {
         },
       ]}
     />
+    </AuthGuard>
   )
 }

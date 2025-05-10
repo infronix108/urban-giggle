@@ -1,8 +1,10 @@
 import ServicePageLayout from "@/app/components/ServicePageLayout"
+import AuthGuard from "../authGuard";
 
 export default function FoodServicesPage() {
   return (
-    <ServicePageLayout
+    <AuthGuard>
+      <ServicePageLayout
       name="Food & Catering"
       description="Elevate your events with our exquisite dining and catering services. Our expert culinary team crafts memorable dining experiences using the finest ingredients and innovative presentation techniques. Whether it's an intimate dinner party or a grand corporate event, we deliver exceptional food service that delights your guests and exceeds expectations."
       process={[
@@ -28,5 +30,6 @@ export default function FoodServicesPage() {
         },
       ]}
     />
+    </AuthGuard>
   )
 }

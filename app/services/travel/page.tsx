@@ -1,8 +1,10 @@
 import ServicePageLayout from "@/app/components/ServicePageLayout"
+import AuthGuard from "../authGuard";
 
 export default function TravelServicesPage() {
   return (
-    <ServicePageLayout
+    <AuthGuard>
+      <ServicePageLayout
       name="Travel & Transport"
       description="Experience luxury travel and transportation solutions designed for the discerning traveler. From private car services to customized travel itineraries, we ensure every journey is comfortable, reliable, and memorable. Our premium transportation services cater to both business and leisure travelers, providing seamless door-to-door experiences with attention to every detail."
       process={[
@@ -34,5 +36,6 @@ export default function TravelServicesPage() {
         },
       ]}
     />
+    </AuthGuard>
   )
 }

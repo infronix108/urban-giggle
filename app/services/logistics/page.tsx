@@ -1,8 +1,10 @@
 import ServicePageLayout from "@/app/components/ServicePageLayout"
+import AuthGuard from "../authGuard";
 
 export default function LogisticsServicesPage() {
   return (
-    <ServicePageLayout
+    <AuthGuard>
+      <ServicePageLayout
       name="Logistics & Moving"
       description="Experience stress-free relocation and logistics services with our professional moving solutions. From residential moves to commercial logistics, we handle every aspect of your moving needs with precision and care. Our experienced team ensures your belongings are safely packed, transported, and delivered to your destination, making your move as smooth as possible."
       process={[
@@ -34,5 +36,6 @@ export default function LogisticsServicesPage() {
         },
       ]}
     />
+    </AuthGuard>
   )
 }

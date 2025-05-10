@@ -1,8 +1,10 @@
 import ServicePageLayout from "@/app/components/ServicePageLayout"
+import AuthGuard from "../authGuard";
 
 export default function EducationServicesPage() {
   return (
-    <ServicePageLayout
+    <AuthGuard>
+      <ServicePageLayout
       name="Education & Training"
       description="Access premium educational services and professional development programs tailored to your learning goals. Our expert tutors and trainers provide personalized instruction across various subjects and skill sets. Whether you're a student seeking academic excellence or a professional looking to advance your career, our comprehensive educational solutions help you achieve your learning objectives."
       process={[
@@ -34,5 +36,6 @@ export default function EducationServicesPage() {
         },
       ]}
     />
+    </AuthGuard>
   )
 }

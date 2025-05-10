@@ -1,8 +1,10 @@
 import ServicePageLayout from "@/app/components/ServicePageLayout"
+import AuthGuard from "../authGuard";
 
 export default function HealthServicesPage() {
   return (
-    <ServicePageLayout
+    <AuthGuard>
+      <ServicePageLayout
       name="Health & Wellness"
       description="Discover comprehensive health and wellness solutions designed to enhance your physical and mental well-being. Our personalized programs combine expert guidance with modern wellness practices to help you achieve your health goals. From fitness training to nutrition planning, we provide holistic wellness services that promote a balanced and healthy lifestyle."
       process={[
@@ -34,5 +36,6 @@ export default function HealthServicesPage() {
         },
       ]}
     />
+    </AuthGuard>
   )
 }

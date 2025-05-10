@@ -1,8 +1,10 @@
 import ServicePageLayout from "@/app/components/ServicePageLayout"
+import AuthGuard from "../authGuard";
 
 export default function HomeServicesPage() {
   return (
-    <ServicePageLayout
+    <AuthGuard>
+      <ServicePageLayout
       name="Home Services"
       description="Experience premium home maintenance and improvement services tailored to your needs. Our team of skilled professionals delivers exceptional quality work for all your home service requirements, from routine maintenance to major renovations. We pride ourselves on attention to detail, reliability, and customer satisfaction, ensuring your home remains in perfect condition year-round."
       process={[
@@ -23,5 +25,6 @@ export default function HomeServicesPage() {
         
       ]}
     />
+    </AuthGuard>
   )
 }

@@ -1,8 +1,10 @@
 import ServicePageLayout from "@/app/components/ServicePageLayout"
+import AuthGuard from "../authGuard";
 
 export default function FashionServicesPage() {
   return (
-    <ServicePageLayout
+    <AuthGuard>
+      <ServicePageLayout
       name="Fashion & Styling"
       description="Transform your personal style with our expert fashion consulting and styling services. Our professional stylists work closely with you to create a wardrobe that reflects your personality, lifestyle, and aspirations. From personal shopping to closet organization, we provide comprehensive fashion solutions that help you look and feel your best every day."
       process={[
@@ -34,5 +36,6 @@ export default function FashionServicesPage() {
         },
       ]}
     />
+    </AuthGuard>
   )
 }

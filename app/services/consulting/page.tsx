@@ -1,8 +1,10 @@
 import ServicePageLayout from "@/app/components/ServicePageLayout"
+import AuthGuard from "../authGuard";
 
 export default function ConsultingServicesPage() {
   return (
-    <ServicePageLayout
+    <AuthGuard>
+      <ServicePageLayout
       name="Business Consulting"
       description="Transform your business with our strategic consulting services. Our experienced consultants provide expert guidance across various business domains, helping organizations optimize operations, increase efficiency, and drive growth. From strategy development to implementation support, we partner with you to achieve sustainable business success."
       process={[
@@ -34,5 +36,6 @@ export default function ConsultingServicesPage() {
         },
       ]}
     />
+    </AuthGuard>
   )
 }

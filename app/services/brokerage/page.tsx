@@ -93,5 +93,6 @@ export default function BrokeragePage() {
         </div>
       </div>
     </div>
+    </AuthGuard>
   )
 }

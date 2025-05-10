@@ -1,98 +1,71 @@
 "use client"
 
-import { motion } from "framer-motion"
-import Image from "next/image"
-
 import AuthGuard from "@/components/authGuard";
+import BrokerageContactForm from "./BrokerageContactForm";
+import { useEffect, useState } from "react";
+import ServicePageLayout from "@/app/components/ServicePageLayout";
 
 export default function BrokeragePage() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const infronixEmail = localStorage.getItem('infronix_email');
+    const infronixToken = localStorage.getItem('infronix_token');
+    if (infronixEmail && infronixToken) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const brokerageProcess = [
+    "Initial consultation and property needs assessment",
+    "Personalized property search and recommendations",
+    "Site visits and property tours",
+    "Negotiation and paperwork assistance",
+    "Deal closure and post-sale support"
+  ];
+
+  const brokerageSites = [
+    {
+      name: "Urban Realty",
+      url: "https://urbanrealty.example.com/",
+      rating: 4.8,
+      verified: true,
+    },
+    // Add more if needed
+  ];
+
   return (
-    <AuthGuard>
-      <div className="min-h-screen bg-deep-blue">
-      {/* Hero Section */}
-      <div className="container mx-auto px-4 py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-4xl mx-auto"
-        >
-          <h1 className="text-4xl font-bold text-white mb-4">
-            Premium Brokerage Services
-          </h1>
-          <p className="text-gray-400 text-xl mb-8">
-            Your trusted partner for residential, commercial, and lease properties
-          </p>
-        </motion.div>
-
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
-          {/* Residential */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="bg-gray-800 rounded-2xl p-6 hover:bg-gray-700 transition-all duration-300 hover:shadow-lg"
-          >
-            <h3 className="text-2xl font-semibold text-white mb-4">
-              Residential
-            </h3>
-            <p className="text-gray-400">
-              Expert assistance for buying, selling, and renting residential properties
-            </p>
-          </motion.div>
-
-          {/* Commercial */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="bg-gray-800 rounded-2xl p-6 hover:bg-gray-700 transition-all duration-300 hover:shadow-lg"
-          >
-            <h3 className="text-2xl font-semibold text-white mb-4">
-              Commercial
-            </h3>
-            <p className="text-gray-400">
-              Comprehensive services for office spaces, retail, and industrial properties
-            </p>
-          </motion.div>
-
-          {/* Lease */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="bg-gray-800 rounded-2xl p-6 hover:bg-gray-700 transition-all duration-300 hover:shadow-lg"
-          >
-            <h3 className="text-2xl font-semibold text-white mb-4">
-              Lease
-            </h3>
-            <p className="text-gray-400">
-              Professional lease management and negotiation services
-            </p>
-          </motion.div>
-        </div>
-
-        {/* CTA Section */}
-        <div className="mt-16 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-2xl mx-auto"
-          >
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Ready to Get Started?
-            </h2>
-            <p className="text-gray-400 mb-8">
-              Contact us today to schedule a consultation
-            </p>
-            <button 
-              className="px-8 py-3 bg-electric-blue text-white rounded-2xl hover:bg-electric-blue/90 transition-all duration-300 hover:shadow-lg">
-              Contact Us
-            </button>
-          </motion.div>
-        </div>
+    <div className="relative">
+      <div className={!isLoggedIn ? "filter blur-sm pointer-events-none select-none" : ""}>
+        <ServicePageLayout
+          name="Premium Brokerage Services"
+          description="Your trusted partner for residential, commercial, and lease properties. Experience seamless property transactions with our expert team guiding you at every step."
+          process={brokerageProcess}
+          image="/images/brokerage-hero.jpg"
+          sites={brokerageSites}
+          contactHeading="Contact Us"
+          customSitesSection={
+            <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
+              {[ 
+                { icon: "🏡", title: "Residential", desc: "Find your dream home or apartment" },
+                { icon: "🏢", title: "Commercial", desc: "Offices, shops, and business spaces" },
+                { icon: "🏭", title: "Warehouse / Land", desc: "Industrial, storage, or land plots" }
+              ].map((item, idx) => (
+                <button
+                  key={item.title}
+                  className="group relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl flex flex-col items-center shadow-xl hover:scale-105 hover:bg-white/20 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-electric-blue cursor-pointer w-[330px] h-[120px] md:w-[340px] md:h-[140px] lg:w-[360px] lg:h-[150px] px-6 py-6"
+                  style={{ minWidth: 300, minHeight: 110 }}
+                >
+                  <span className="text-4xl mb-2">{item.icon}</span>
+                  <span className="text-xl font-semibold text-white mb-1">{item.title}</span>
+                  <span className="text-gray-300 text-center text-sm">{item.desc}</span>
+                </button>
+              ))}
+            </div>
+          }
+          customContactSection={<BrokerageContactForm />}
+        />
       </div>
     </div>
-    </AuthGuard>
-  )
+  );
 }

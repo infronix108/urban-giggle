@@ -1,6 +1,6 @@
 import ServicePageLayout from "@/app/components/ServicePageLayout"
 
-import AuthGuard from "../authGuard";
+import AuthGuard from "@/components/authGuard";
 
 export default function BusinessDevelopmentPage() {
   return (
@@ -26,5 +26,6 @@ export default function BusinessDevelopmentPage() {
         
       ]}
     />
+    </AuthGuard>
   )
 }

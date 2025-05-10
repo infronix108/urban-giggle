@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import Image from "next/image"
 
-import AuthGuard from "../authGuard";
+import AuthGuard from "@/components/authGuard";
 
 export default function CareerSupportPage() {
   return (

@@ -1,5 +1,5 @@
 import ServicePageLayout from "@/app/components/ServicePageLayout"
-import AuthGuard from "../authGuard";
+import AuthGuard from "@/components/authGuard";
 
 export default function ConsultingServicesPage() {
   return (
